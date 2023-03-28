@@ -24,12 +24,12 @@ export default factories.createCoreController('api::blog.blog', ({ strapi }) => 
         }
     },
 
-    async create(ctx) {
+    async create(ctx: any) {
         const { title, description } = ctx.request.body;
         ctx.body = await strapi.service("api::blog.blog").createBlog({ title, description });
     },
 
-    async update(ctx) {
+    async update(ctx: any) {
         const { id } = ctx.params;
         console.log(id)
         const { title, description } = ctx.request.body;
