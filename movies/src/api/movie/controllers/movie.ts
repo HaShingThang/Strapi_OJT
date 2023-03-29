@@ -3,6 +3,7 @@
  */
 
 import { factories } from "@strapi/strapi";
+import { createReadStream } from 'fs'
 
 export default factories.createCoreController(
     "api::movie.movie",
@@ -45,13 +46,19 @@ export default factories.createCoreController(
         },
 
         async createMovie(ctx) {
-            const { title, director, year, review, cat } = ctx.request.body;
+            let { title, director, year, review } = ctx.request.body;
+            let photo = {
+                data: createReadStream(ctx.request.files.img.path),
+                contentType: ctx.request.files.img.type,
+                name: ctx.request.files.img.name,
+            }
+            let cat = [1]
             try {
                 if (!title || !director || !year || !review || !cat)
                     throw Error("Please provide all required fields");
                 ctx.body = await strapi
                     .service("api::movie.movie")
-                    .createMovie({ title, director, year, review, cat });
+                    .createMovie({ title, director, year, review, cat, photo });
             } catch (error) {
                 ctx.response.status = 404;
                 ctx.response.body = {

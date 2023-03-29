@@ -5,13 +5,14 @@
 import { factories } from '@strapi/strapi';
 
 
+
 export default factories.createCoreService('api::movie.movie', ({ strapi }) => ({
 
     async findMovie(title) {
         const getMovie = await strapi.db.query('api::movie.movie').findOne({
             select: ['id', 'title', 'director', 'year', 'review'],
             where: { title },
-            populate: ["categories"],
+            populate: ["categories", "img"],
         });
         return getMovie;
     },
@@ -23,13 +24,13 @@ export default factories.createCoreService('api::movie.movie', ({ strapi }) => (
                 select: ['id', 'title', 'director', 'year', 'review'],
                 where: { director },
                 orderBy: { publishedAt: 'DESC' },
-                populate: ["categories"],
+                populate: ["categories", "img"],
             });
         } else {
             movies = await strapi.db.query('api::movie.movie').findMany({
                 select: ['id', 'title', 'director', 'year', 'review'],
                 orderBy: { publishedAt: 'DESC' },
-                populate: ["categories"],
+                populate: ["categories", "img"],
 
             });
         }
@@ -38,6 +39,7 @@ export default factories.createCoreService('api::movie.movie', ({ strapi }) => (
     },
 
     async createMovie(movie) {
+        console.log("Image",movie.photo.data)
         const createdMovie = await strapi.db.query('api::movie.movie').create({
             data: {
                 title: movie.title,
@@ -47,8 +49,10 @@ export default factories.createCoreService('api::movie.movie', ({ strapi }) => (
                 publishedAt: new Date(),
                 categories: {
                     set: movie.cat,
-                }
+                },
+                img: movie.photo.data
             },
+            populate: ["categories", "img"],
         });
         return createdMovie;
     },

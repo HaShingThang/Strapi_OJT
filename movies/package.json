@@ -11,9 +11,15 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "@strapi/strapi": "4.8.2",
-    "@strapi/plugin-users-permissions": "4.8.2",
     "@strapi/plugin-i18n": "4.8.2",
+    "@strapi/plugin-users-permissions": "4.8.2",
+    "@strapi/provider-email-nodemailer": "^4.8.2",
+    "@strapi/provider-email-sendgrid": "^4.8.2",
+    "@strapi/provider-upload-cloudinary": "^4.8.2",
+    "@strapi/strapi": "4.8.2",
+    "@types/nodemailer": "^6.4.7",
+    "fs": "^0.0.1-security",
+    "nodemailer": "^6.9.1",
     "pg": "8.8.0"
   },
   "author": {
